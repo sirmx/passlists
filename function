@@ -1,3 +1,28 @@
+
+
+#################################################
+##################################################
+# function create_passlist ()
+{
+	echo "Please wait as files are downloaded... "
+	mkdir -v passlist_gen0
+	cd passlist_gen0
+	wget -c https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/000webhost.txt
+	wget -c https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/10_million_password_list_top_1000000.txt
+	wget -c https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Ashley_Madison.txt
+	wget -c https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/500-worst-passwords.txt
+	wget -c https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/darkc0de.txt
+	wget -c https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/rockyou.txt.tar.gz
+	echo "Creating passlist... This will take some time."
+	tar -xvf rockyou.txt.tar.gz && rm -f rockyou.txt.tar.gz
+	for file in $(ls);  do echo "File: ${file} is processing..."; cat ${file} |pw-inspector -m 6 -M 16 >> /tmp/.wpa2-passlist.lst; echo "Compiling ${file} ... ";rm -f ${file}; done
+	shuf /tmp/.wpa2-passlist.lst >> ~/wpa2-passlist.lst
+	sync
+	rm -f /tmp/.wpa2-passlist.lst
+	echo "File: ~/wpa2-passlist.lst has been generated."
+}
+###################################################
+
 function crack_wpa2 ()
 {
   ## Takes two parameters: crack_wpa2 <pcap file.cap> <BSSID>
