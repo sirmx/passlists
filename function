@@ -2,7 +2,7 @@
 
 #################################################
 ##################################################
-# function create_passlist ()
+function create_passlist ()
 {
 	echo "Please wait as files are downloaded... "
 	mkdir -v passlist_gen0
